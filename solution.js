@@ -1,3 +1,9 @@
+/**
+ * Generate combinations
+ * 
+ * @param {Array} args 
+ * @returns Array
+ */
 function generateCartesian(args) {
     var r = [], 
         max = args.length - 1;
@@ -20,26 +26,33 @@ function generateCartesian(args) {
     return r;
 }
 
-function cartesian(options, formatOrVariants=[]) {
+/**
+ * Cartesian formater
+ * 
+ * @param {Array} options 
+ * @param {Array|String} variants 
+ * @returns Array
+ */
+function cartesian(options, variants=[]) {
+    var output = []
     const combinations = generateCartesian(options)
 
     // Text Format
-    if(formatOrVariants.constructor === String && formatOrVariants === 'plane') {
-        const output = []
-
+    if(variants.constructor === String && variants === 'plane') {
         combinations.map(combination => output.push(combination.join('-')))
-
         return output
     }
 
     // Object Format
-    if(formatOrVariants.constructor === Array && formatOrVariants.length > 0) {
-        const option = {}
-
+    if(variants.constructor === Array && variants.length > 0) {
         combinations.map(combination => {
+            const option = {}
+
             combination.map((data, i) => option[variants[i]] = data)
+            output.push(option)
         })
         
+        return output
     }
 
     // Array Format
@@ -47,9 +60,8 @@ function cartesian(options, formatOrVariants=[]) {
 }
 
 
-
 // Variants
-variants = ['size', 'color', 'country', 'grade'];
+const variants = ['size', 'color', 'country', 'grade'];
 
 // Options
 const size = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL']
@@ -58,12 +70,12 @@ const country = ['BD', 'PK', 'IN']
 const grade = ['A', 'B']
 
 // Array Format
-const result = cartesian([size, color, country])
+// const result = cartesian([size, color, country, grade])
 
 // Text Format
-// const result = cartesian([size, color, country], 'plane')
+// const result = cartesian([size, color, country, grade], 'plane')
 
 // Object Format
-// const result = cartesian([size, color, country, grade], variants)
+const result = cartesian([size, color, country, grade], variants)
 
 console.log(result);
